@@ -20,6 +20,24 @@ class UserService {
         }
     }
 
+    async signIn(email, plainPassword) {
+        try {
+            const user = await this.userRepository.getByEmail(email)
+            const passwordsMatch = this.checkPassword(plainPassword,user.password)
+
+            if (!passwordsMatch) {
+                console.log('password doesnot match')
+                throw { error: 'Incorrect password' }
+            }
+
+            const newJWT = this.createToken({email : user.email,id : user.id })
+            return newJWT ;
+        } catch (error) {
+            console.log("something went wrong in service layer")
+            throw error;
+        }
+    }
+
     createToken(user) {
         try {
             const result = jwt.sign(user, JWT_KEY, { expiresIn: '1d' })
@@ -42,12 +60,15 @@ class UserService {
     }
 
     checkPassword(userPlainPassword, encryptedPassword) {
-     try {
-        return bcrypt.compareSync(userPlainPassword,encryptedPassword)
-     } catch (error) {
-        console.log('somethinf went wroong in service layer')
-        throw error;
-     }
+        try {
+            return bcrypt.compareSync(userPlainPassword, encryptedPassword)
+        } catch (error) {
+            console.log('somethinf went wroong in service layer')
+            throw error;
+        }
     }
+
+
+
 }
 module.exports = UserService
