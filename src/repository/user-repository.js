@@ -20,11 +20,22 @@ class UserRepository {
                     id: userId
                 }
             })
-           return true; 
+            return true;
         } catch (error) {
             console.log("something went wrong at repository layer")
             throw error;
         }
     }
+    async getById(userId) {
+        try {
+            const user = await User.findByPk(userId,{
+                attributes : ['email','id',]
+            })
+            return user
+        } catch (error) {
+            console.log("something went wrong repositiry layer")
+            throw error
+        }
+    }
 }
-module.exports =UserRepository
+module.exports = UserRepository
