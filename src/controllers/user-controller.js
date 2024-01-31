@@ -15,12 +15,12 @@ const create = async (req, res) => {
             err: {}
         })
     } catch (error) {
-        console.log(error)
-        return res.status(500).json({
-            message: 'something went wrong',
+        //console.log(error)
+        return res.status(error.statusCode).json({
+            message: error.message,
             data: {},
             success: false,
-            err: error
+            err: error.explanation
         })
     }    
 }
@@ -81,7 +81,7 @@ const isAuthenticated = async(req,res)=>
         return res.status(500).json({
             message: 'Successful fetched whether user is admin or not',
             data: {},
-            success: false,
+            success: false, 
             err: error
         })
     }

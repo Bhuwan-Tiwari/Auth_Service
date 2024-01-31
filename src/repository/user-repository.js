@@ -1,4 +1,5 @@
-const { User,Role} = require("../models/index")
+const { ValidationError } = require("sequelize");
+const { User, Role } = require("../models/index")
 
 
 class UserRepository {
@@ -8,6 +9,9 @@ class UserRepository {
             return userr;
 
         } catch (error) {
+            if (error.name = 'SequelizeValidationError') {
+                throw new ValidationError(error)
+            }
             console.log("something went wrong at repository layer")
             throw error
         }
@@ -28,8 +32,8 @@ class UserRepository {
     }
     async getById(userId) {
         try {
-            const user = await User.findByPk(userId,{
-                attributes : ['email','id',]
+            const user = await User.findByPk(userId, {
+                attributes: ['email', 'id',]
             })
             return user
         } catch (error) {
@@ -39,27 +43,28 @@ class UserRepository {
     }
     async getByEmail(userEmail) {
         try {
-            const user = await User.findOne({where: {
-                email: userEmail
-            }});
+            const user = await User.findOne({
+                where: {
+                    email: userEmail
+                }
+            });
             return user;
         } catch (error) {
             console.log("Something went wrong on repository layer");
             throw error;
         }
     }
-    async isAdmin(userId)
-    {
-try {
-    const user = await User.findByPk(userId)
-    const adminRole = await Role.findOne({
-        name:'AMDIN'
-    })
-    return user.hasRole(adminRole)
-} catch (error) {
-    console.log("Something went wrong on repository layer");
-    throw error;
-}
+    async isAdmin(userId) {
+        try {
+            const user = await User.findByPk(userId)
+            const adminRole = await Role.findOne({
+                name: 'AMDIN'
+            })
+            return user.hasRole(adminRole)
+        } catch (error) {
+            console.log("Something went wrong on repository layer");
+            throw error;
+        }
     }
 }
 module.exports = UserRepository
