@@ -29,6 +29,7 @@ class UserService {
         }
     }
 
+    //in signin we create a token afetr matching the password
     async signIn(email, plainPassword) {
         try {
             const user = await this.userRepository.getByEmail(email)
@@ -49,12 +50,12 @@ class UserService {
     async isAuthenticated(token)
     {
          try {
-           const response = await this.verifyToken(token)
+           const response = await this.verifyToken(token)    //we get  the email and id from response token after varifcation
            if(!response)
            {
-            throw{error:'invalid tken'}
+            throw{error:'invalid token'}
            }
-           const user = this.userRepository.getById(response.id)
+           const user =await  this.userRepository.getById(response.id)
            if(!user)
            {
             throw{error:'no user with this corrosponding token exixts'}

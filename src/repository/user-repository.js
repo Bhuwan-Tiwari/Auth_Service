@@ -60,7 +60,7 @@ class UserRepository {
             const adminRole = await Role.findOne({
                 name: 'AMDIN'
             })
-            return user.hasRole(adminRole)
+            return user.hasRole(adminRole)   //return true or false
         } catch (error) {
             console.log("Something went wrong on repository layer");
             throw error;

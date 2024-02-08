@@ -1,6 +1,7 @@
 
 const UserService = require('../services/user-service')
 
+//create user with email and passworg
 const userService = new UserService();
 const create = async (req, res) => {
     try {
@@ -24,6 +25,8 @@ const create = async (req, res) => {
         })
     }    
 }
+
+// generate  token  for the user who is email provide with given password check
 const signIn = async (req, res) => {
     try {
 
@@ -45,11 +48,14 @@ const signIn = async (req, res) => {
 
     }
 }
+
+//it just check user is authenticate and give user id as response
 const isAuthenticated = async(req,res)=>
 {
    try {
     const token = req.headers['x-access-token']
-    const response = userService.isAuthenticated(token)
+    const response = await userService.isAuthenticated(token)
+    console.log("data in controller",response)
     return res.status(200).json({
         success: true,
         message: 'user is auuthenticates and token is valid',
@@ -66,6 +72,7 @@ const isAuthenticated = async(req,res)=>
    })
      }
     }  
+    //give boolean value is the given user id is of admin or not
  const isAdmin = async(req,res)=>
  {
     try {
