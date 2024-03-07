@@ -55,7 +55,7 @@ class UserService {
            {
             throw{error:'invalid token'}
            }
-           const user =await  this.userRepository.getById(response.id)
+           const user =await  this.userRepository.getById(response.id) //we get full user object
            if(!user)
            {
             throw{error:'no user with this corrosponding token exixts'}
