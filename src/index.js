@@ -16,7 +16,8 @@ const prepareAndStarrtServer = () => {
     app.use(bodyParser.json())
     app.use(bodyParser.urlencoded({ extended: true }))
 
-    app.use('/api', apiRoutes)
+    // app.use('/api', apiRoutes)
+    app.use('/authservice/api',apiRoutes)
 
 
     app.listen(PORT, async () => {
